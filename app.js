@@ -74,9 +74,29 @@ const menu = [
 ];
 
 const sectionCenter = document.querySelector(".section-center");
+const filterBtns = document.querySelectorAll(".filter-btn");
 window.addEventListener("DOMContentLoaded", function () {
   //console.log("shake n bake");
-  let displayMenu = menu.map(function (item) {
+  displayMenuItems(menu);
+});
+filterBtns.forEach(function (btn) {
+  btn.addEventListener("click", function (e) {
+    const category = e.currentTarget.dataset.id;
+    const menuCategory = menu.filter(function (menuItem) {
+      if (menuItem.category === category) {
+        return menuItem;
+      }
+    });
+    if (category === "all") {
+      displayMenuItems(menu);
+    } else {
+      displayMenuItems(menuCategory);
+    }
+  });
+});
+
+function displayMenuItems(menuItems) {
+  let displayMenu = menuItems.map(function (item) {
     return ` <article class="menu-item">
     <img src=${item.img} class="photo" alt=${item.title} />
     <div class="item-info">
@@ -88,5 +108,7 @@ window.addEventListener("DOMContentLoaded", function () {
     </div>
   </article>`;
   });
-  console.log(displayMenu);
-});
+  displayMenu = displayMenu.join("");
+  sectionCenter.innerHTML = displayMenu;
+  //console.log(displayMenu);
+}
